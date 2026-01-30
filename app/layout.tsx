@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 
-const appFont=DM_Sans ({
-subsets:['latin']
+import { ClerkProvider } from '@clerk/nextjs'
+import Provider from "./provider"; // Import your custom Provider
+import { Provider as TooltipProvider } from "@radix-ui/react-tooltip"; // Rename if needed
 
+const appFont = DM_Sans({
+  subsets: ['latin']
 })
-
 
 export const metadata: Metadata = {
   title: "UIUX Mockup Generator App",
@@ -19,12 +21,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-      className={appFont.className}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={appFont.className}>
+          <Provider>
+            <TooltipProvider>
+              {children}
+            </TooltipProvider>
+          </Provider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
+
